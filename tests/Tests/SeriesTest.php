@@ -1,13 +1,17 @@
 <?php
+namespace Elite50\DataDogClient\Tests;
 
-namespace Bayer\DataDogClient\Tests;
+use Elite50\DataDogClient\Series;
+use Elite50\DataDogClient\Series\Metric;
 
-use Bayer\DataDogClient\Series;
-use Bayer\DataDogClient\Series\Metric;
-
-class SeriesTest extends \PHPUnit_Framework_TestCase {
-
-    public function testAddMetrics() {
+/**
+ * Class SeriesTest
+ * @package Elite50\DataDogClient\Tests
+ */
+class SeriesTest extends \PHPUnit_Framework_TestCase
+{
+    public function testAddMetrics()
+    {
         // Some test metrics
         $metric1 = new Metric('test1.metric.name', array(20));
         $metric2 = new Metric('test2.metric.name', array(30));
@@ -55,26 +59,31 @@ class SeriesTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($metric1, $series5->getMetric('test1.metric.name'));
     }
 
-    public function testGetMetricByName() {
+    public function testGetMetricByName()
+    {
         $series = new Series();
         $metric = new Metric('test.metric.name', array(20));
-
         $series->addMetric($metric);
+
+        $metrics = array_values($series->getMetrics());
+
         $this->assertCount(1, $series->getMetrics());
         $this->assertEquals($metric, $series->getMetric('test.metric.name'));
-        $this->assertEquals($metric, array_shift(array_values($series->getMetrics())));
+        $this->assertEquals($metric, array_shift($metrics));
         $this->assertEquals($metric, $series->getMetrics()['test.metric.name']);
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Series\MetricNotFoundException
+     * @expectedException \Elite50\DataDogClient\Series\MetricNotFoundException
      */
-    public function testGetNonExistingMetricThrowsException() {
+    public function testGetNonExistingMetricThrowsException()
+    {
         $series = new Series();
         $series->getMetric('non.existing.metric');
     }
 
-    public function testRemoveMetricByName() {
+    public function testRemoveMetricByName()
+    {
         $series = new Series();
         $metric = new Metric('test.metric.name', array(20));
 
@@ -85,21 +94,24 @@ class SeriesTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Series\MetricNotFoundException
+     * @expectedException \Elite50\DataDogClient\Series\MetricNotFoundException
      */
-    public function testRemoveNonExistingMetricThrowsException() {
+    public function testRemoveNonExistingMetricThrowsException()
+    {
         $series = new Series();
         $series->removeMetric('non.existing.metric');
     }
 
-    public function testRemoveAllMetricsDoesNotThrowException() {
+    public function testRemoveAllMetricsDoesNotThrowException()
+    {
         $series = new Series();
         $this->assertEmpty($series->getMetrics());
         $series->removeMetrics();
         $this->assertEmpty($series->getMetrics());
     }
 
-    public function testRemoveMetrics() {
+    public function testRemoveMetrics()
+    {
         $series = new Series();
         $metric = new Metric('test.metric.name', array(20));
 

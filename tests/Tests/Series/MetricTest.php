@@ -1,8 +1,8 @@
 <?php
 
-namespace Bayer\DataDogClient\Tests;
+namespace Elite50\DataDogClient\Tests;
 
-use Bayer\DataDogClient\Series\Metric;
+use Elite50\DataDogClient\Series\Metric;
 
 class MetricTest extends \PHPUnit_Framework_TestCase {
 
@@ -19,7 +19,7 @@ class MetricTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Series\Metric\InvalidTypeException
+     * @expectedException \Elite50\DataDogClient\Series\Metric\InvalidTypeException
      */
     public function testInvalidMetricTypeThrowsException() {
         $metric = new Metric('test.metric.name', array(20));
@@ -120,7 +120,7 @@ class MetricTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Series\Metric\InvalidPointException
+     * @expectedException \Elite50\DataDogClient\Series\Metric\InvalidPointException
      */
     public function testInvalidPointTimestampThrowsException() {
         new Metric('test.metric.name', array(
@@ -129,7 +129,7 @@ class MetricTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Series\Metric\InvalidPointException
+     * @expectedException \Elite50\DataDogClient\Series\Metric\InvalidPointException
      */
     public function testInvalidPointValueThrowsException() {
         new Metric('test.metric.name', array(

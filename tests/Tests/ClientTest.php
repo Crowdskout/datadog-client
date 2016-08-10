@@ -1,11 +1,11 @@
 <?php
 
-namespace Bayer\DataDogClient\Tests;
+namespace Elite50\DataDogClient\Tests;
 
-use Bayer\DataDogClient\Client;
-use Bayer\DataDogClient\Event;
-use Bayer\DataDogClient\Series;
-use Bayer\DataDogClient\Series\Metric;
+use Elite50\DataDogClient\Client;
+use Elite50\DataDogClient\Event;
+use Elite50\DataDogClient\Series;
+use Elite50\DataDogClient\Series\Metric;
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
 
@@ -23,7 +23,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
     public function testConstructor() {
         $client = new Client(self::API_KEY);
-        $this->assertInstanceOf('Bayer\DataDogClient\Client', $client);
+        $this->assertInstanceOf('Elite50\DataDogClient\Client', $client);
     }
 
     public function testGetAndSetApiKey() {
@@ -90,7 +90,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Client\EmptyMetricException
+     * @expectedException \Elite50\DataDogClient\Client\EmptyMetricException
      */
     public function testSendingEmptyMetricThrowsException() {
         $metric = new Metric('test.metric.name', array(20));
@@ -134,7 +134,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Client\EmptySeriesException
+     * @expectedException \Elite50\DataDogClient\Client\EmptySeriesException
      */
     public function testDoNotSendEmptySeries() {
         $series = new Series();

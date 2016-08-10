@@ -1,10 +1,10 @@
 <?php
 
-namespace Bayer\DataDogClient\Series;
+namespace Elite50\DataDogClient\Series;
 
-use Bayer\DataDogClient\AbstractDataObject;
-use Bayer\DataDogClient\Series\Metric\InvalidPointException;
-use Bayer\DataDogClient\Series\Metric\InvalidTypeException;
+use Elite50\DataDogClient\AbstractDataObject;
+use Elite50\DataDogClient\Series\Metric\InvalidPointException;
+use Elite50\DataDogClient\Series\Metric\InvalidTypeException;
 
 /**
  * Class Metric

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bayer\DataDogClient\Series;
+namespace Elite50\DataDogClient\Series;
 
 class MetricNotFoundException extends \Exception {
 

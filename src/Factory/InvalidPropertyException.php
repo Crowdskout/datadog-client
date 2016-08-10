@@ -1,6 +1,6 @@
 <?php
 
-namespace Bayer\DataDogClient\Factory;
+namespace Elite50\DataDogClient\Factory;
 
 class InvalidPropertyException extends \Exception {
 

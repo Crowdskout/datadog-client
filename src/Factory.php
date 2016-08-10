@@ -1,9 +1,9 @@
 <?php
 
-namespace Bayer\DataDogClient;
+namespace Elite50\DataDogClient;
 
-use Bayer\DataDogClient\Factory\InvalidPropertyException;
-use Bayer\DataDogClient\Series\Metric;
+use Elite50\DataDogClient\Factory\InvalidPropertyException;
+use Elite50\DataDogClient\Series\Metric;
 
 /**
  * Class Factory

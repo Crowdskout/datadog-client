@@ -1,9 +1,9 @@
 <?php
 
-namespace Bayer\DataDogClient;
+namespace Elite50\DataDogClient;
 
-use Bayer\DataDogClient\Series\Metric;
-use Bayer\DataDogClient\Series\MetricNotFoundException;
+use Elite50\DataDogClient\Series\Metric;
+use Elite50\DataDogClient\Series\MetricNotFoundException;
 
 /**
  * Class Series

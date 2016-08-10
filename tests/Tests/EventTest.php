@@ -1,8 +1,8 @@
 <?php
 
-namespace Bayer\DataDogClient\Tests;
+namespace Elite50\DataDogClient\Tests;
 
-use Bayer\DataDogClient\Event;
+use Elite50\DataDogClient\Event;
 
 class EventTest extends \PHPUnit_Framework_TestCase {
     public function testGetAndSetTitleAndText() {
@@ -34,7 +34,7 @@ class EventTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Event\InvalidPriorityException
+     * @expectedException \Elite50\DataDogClient\Event\InvalidPriorityException
      */
     public function testInvalidPriorityThrowsException() {
         $event = new Event('Text', 'Title');
@@ -79,7 +79,7 @@ class EventTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Event\InvalidAlertTypeException
+     * @expectedException \Elite50\DataDogClient\Event\InvalidAlertTypeException
      */
     public function testInvalidTypeThrowsException() {
         $event = new Event('Text', 'Title');
@@ -103,7 +103,7 @@ class EventTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Event\InvalidSourceTypeException
+     * @expectedException \Elite50\DataDogClient\Event\InvalidSourceTypeException
      */
     public function testInvalidSourceTypeThrowsException() {
         $event = new Event('Text', 'Title');

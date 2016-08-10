@@ -1,10 +1,10 @@
 <?php
 
-namespace Bayer\DataDogClient;
+namespace Elite50\DataDogClient;
 
-use Bayer\DataDogClient\Event\InvalidAlertTypeException;
-use Bayer\DataDogClient\Event\InvalidSourceTypeException;
-use Bayer\DataDogClient\Event\InvalidPriorityException;
+use Elite50\DataDogClient\Event\InvalidAlertTypeException;
+use Elite50\DataDogClient\Event\InvalidSourceTypeException;
+use Elite50\DataDogClient\Event\InvalidPriorityException;
 
 /**
  * Class Event

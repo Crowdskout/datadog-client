@@ -1,6 +1,6 @@
 <?php
 
-namespace Bayer\DataDogClient;
+namespace Elite50\DataDogClient;
 
 /**
  * Interface TagContainerInterface

@@ -1,10 +1,10 @@
 <?php
 
-namespace Bayer\DataDogClient\Tests;
+namespace Elite50\DataDogClient\Tests;
 
-use Bayer\DataDogClient\Factory;
-use Bayer\DataDogClient\Event;
-use Bayer\DataDogClient\Series\Metric;
+use Elite50\DataDogClient\Factory;
+use Elite50\DataDogClient\Event;
+use Elite50\DataDogClient\Series\Metric;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase {
     public function testFactoryCanCreateMetric() {
@@ -25,7 +25,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('foo.bar.com', $metric->getHost());
         $this->assertEquals(array('foo' => 'bar'), $metric->getTags());
 
-        $this->assertInstanceOf('Bayer\DataDogClient\Series\Metric', $metric);
+        $this->assertInstanceOf('Elite50\DataDogClient\Series\Metric', $metric);
     }
 
     public function testFactoryCanCreateEvent() {
@@ -49,11 +49,11 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('foo.bar', $event->getAggregationKey());
         $this->assertEquals(array('foo' => 'bar'), $event->getTags());
 
-        $this->assertInstanceOf('Bayer\DataDogClient\Event', $event);
+        $this->assertInstanceOf('Elite50\DataDogClient\Event', $event);
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Factory\InvalidPropertyException
+     * @expectedException \Elite50\DataDogClient\Factory\InvalidPropertyException
      */
     public function testInvalidOptionThrowsException() {
         Factory::buildEvent(

@@ -1,11 +1,11 @@
 <?php
 
-namespace Bayer\DataDogClient;
+namespace Elite50\DataDogClient;
 
-use Bayer\DataDogClient\Client\EmptyMetricException;
-use Bayer\DataDogClient\Client\EmptySeriesException;
-use Bayer\DataDogClient\Client\RequestException;
-use Bayer\DataDogClient\Series\Metric;
+use Elite50\DataDogClient\Client\EmptyMetricException;
+use Elite50\DataDogClient\Client\EmptySeriesException;
+use Elite50\DataDogClient\Client\RequestException;
+use Elite50\DataDogClient\Series\Metric;
 
 /**
  * Class Client
