@@ -1,6 +1,5 @@
 <?php
-
-namespace Bayer\DataDogClient;
+namespace Elite50\DataDogClient;
 
 /**
  * Class AbstractDataObject
@@ -10,23 +9,26 @@ namespace Bayer\DataDogClient;
  *
  * @package Bayer\DataDogClient
  */
-abstract class AbstractDataObject implements TagContainerInterface {
+abstract class AbstractDataObject implements TagContainerInterface
+{
     /**
      * @inheritdoc
      */
-    protected $tags = array();
+    protected $tags = [];
 
     /**
      * @inheritdoc
      */
-    public function getTags() {
+    public function getTags()
+    {
         return $this->tags;
     }
 
     /**
      * @inheritdoc
      */
-    public function setTags($tags) {
+    public function setTags($tags)
+    {
         $this->tags = $tags;
 
         return $this;
@@ -35,7 +37,8 @@ abstract class AbstractDataObject implements TagContainerInterface {
     /**
      * @inheritdoc
      */
-    public function addTag($name, $value) {
+    public function addTag($name, $value)
+    {
         $this->tags[$name] = $value;
 
         return $this;
@@ -44,7 +47,8 @@ abstract class AbstractDataObject implements TagContainerInterface {
     /**
      * @inheritdoc
      */
-    public function removeTag($name) {
+    public function removeTag($name)
+    {
         if (isset($this->tags[$name])) {
             unset($this->tags[$name]);
         }
@@ -55,8 +59,9 @@ abstract class AbstractDataObject implements TagContainerInterface {
     /**
      * @inheritdoc
      */
-    public function removeTags() {
-        $this->tags = array();
+    public function removeTags()
+    {
+        $this->tags = [];
 
         return $this;
     }

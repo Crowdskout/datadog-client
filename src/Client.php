@@ -1,11 +1,10 @@
 <?php
+namespace Elite50\DataDogClient;
 
-namespace Bayer\DataDogClient;
-
-use Bayer\DataDogClient\Client\EmptyMetricException;
-use Bayer\DataDogClient\Client\EmptySeriesException;
-use Bayer\DataDogClient\Client\RequestException;
-use Bayer\DataDogClient\Series\Metric;
+use Elite50\DataDogClient\Client\EmptyMetricException;
+use Elite50\DataDogClient\Client\EmptySeriesException;
+use Elite50\DataDogClient\Client\RequestException;
+use Elite50\DataDogClient\Series\Metric;
 
 /**
  * Class Client
@@ -20,18 +19,16 @@ use Bayer\DataDogClient\Series\Metric;
  *
  * @package Bayer\DataDogClient
  */
-class Client {
-
-    const ENDPOINT_EVENT  = 'https://app.datadoghq.com/api/v1/events?api_key=';
+class Client
+{
+    const ENDPOINT_EVENT = 'https://app.datadoghq.com/api/v1/events?api_key=';
     const ENDPOINT_SERIES = 'https://app.datadoghq.com/api/v1/series?api_key=';
-
     /**
      * Your personal API key
      *
      * @var string
      */
     protected $apiKey;
-
     /**
      * Application key for read actions.
      * Currently unused
@@ -41,11 +38,12 @@ class Client {
     protected $applicationKey;
 
     /**
-     * @param string      $apiKey
+     * @param string $apiKey
      * @param null|string $applicationKey
      */
-    public function __construct($apiKey, $applicationKey = null) {
-        $this->apiKey         = $apiKey;
+    public function __construct($apiKey, $applicationKey = null)
+    {
+        $this->apiKey = $apiKey;
         $this->applicationKey = $applicationKey;
 
     }
@@ -53,7 +51,8 @@ class Client {
     /**
      * @return string
      */
-    public function getApiKey() {
+    public function getApiKey()
+    {
         return $this->apiKey;
     }
 
@@ -62,7 +61,8 @@ class Client {
      *
      * @return Client
      */
-    public function setApiKey($apiKey) {
+    public function setApiKey($apiKey)
+    {
         $this->apiKey = $apiKey;
 
         return $this;
@@ -71,7 +71,8 @@ class Client {
     /**
      * @return string|null
      */
-    public function getApplicationKey() {
+    public function getApplicationKey()
+    {
         return $this->applicationKey;
     }
 
@@ -80,7 +81,8 @@ class Client {
      *
      * @return Client
      */
-    public function setApplicationKey($applicationKey) {
+    public function setApplicationKey($applicationKey)
+    {
         $this->applicationKey = $applicationKey;
 
         return $this;
@@ -94,7 +96,8 @@ class Client {
      *
      * @return Client
      */
-    public function sendSeries(Series $series) {
+    public function sendSeries(Series $series)
+    {
         $metrics = $series->getMetrics();
         if (empty($metrics)) {
             throw new EmptySeriesException('The series must contain metric data to send');
@@ -119,7 +122,8 @@ class Client {
      *
      * @return Client
      */
-    public function sendMetric(Metric $metric) {
+    public function sendMetric(Metric $metric)
+    {
         $points = $metric->getPoints();
         if (empty($points)) {
             throw new EmptyMetricException('The metric must contain points to send');
@@ -137,12 +141,13 @@ class Client {
      * object, encapsulated it into a Series and sent.
      *
      * @param string $name
-     * @param array  $points
-     * @param array  $options
+     * @param array $points
+     * @param array $options
      *
      * @return Client
      */
-    public function metric($name, array $points, array $options = array()) {
+    public function metric($name, array $points, array $options = [])
+    {
         return $this->sendMetric(
             Factory::buildMetric($name, $points, $options)
         );
@@ -156,11 +161,12 @@ class Client {
      *
      * @param string $text
      * @param string $title
-     * @param array  $options
+     * @param array $options
      *
      * @return Client
      */
-    public function event($text, $title = '', array $options = array()) {
+    public function event($text, $title = '', array $options = [])
+    {
         return $this->sendEvent(
             Factory::buildEvent($text, $title, $options)
         );
@@ -173,7 +179,8 @@ class Client {
      *
      * @return Client
      */
-    public function sendEvent(Event $event) {
+    public function sendEvent(Event $event)
+    {
         $this->send(
             self::ENDPOINT_EVENT . $this->getApiKey(),
             $event->toArray()
@@ -187,23 +194,28 @@ class Client {
      * @param $data
      * @throws Client\RequestException
      */
-    protected function send($url, $data) {
+    protected function send($url, $data)
+    {
         // Prepare request
-        $session = curl_init();
-        curl_setopt($session, CURLOPT_URL, $url);
-        curl_setopt($session, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($session, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($session, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+        $guzzleClient = new \GuzzleHttp\Client();
+        $request = $guzzleClient->createRequest('POST', $url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($data),
+            'future' => true,
+            'exceptions' => false,
+        ]);
 
         // Send request
-        $response     = curl_exec($session);
-        $responseCode = (int)curl_getinfo($session, CURLINFO_HTTP_CODE);
+        $rawResponse = $guzzleClient->send($request);
 
-        // Check for api errors
-        if ($responseCode >= 400) {
-            $response = json_decode($response, true);
-            $message  = "Error $responseCode: ";
+        $rawResponse->then(function() {}, function($rawResponse) {
+            // Check for api errors
+            $responseCode = $rawResponse->getStatusCode();
+
+            $response = json_decode($rawResponse->getBody(), true);
+            $message = "Error $responseCode: ";
             if (isset($response['errors'])) {
                 $message .= implode(' ', $response['errors']);
             }
@@ -213,8 +225,6 @@ class Client {
             }
 
             throw new RequestException($message, $responseCode);
-        }
-
-        curl_close($session);
+        });
     }
 }

@@ -1,25 +1,32 @@
 {
-    "name": "matthiasbayer/datadog-client",
-    "description": "Standalone DataDog PHP Client, works without datadog agent",
-    "keywords": ["datadog", "client", "http", "standalone"],
-    "homepage": "http://bayer.io",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Matthias Bayer",
-            "email": "thematthiasbayer@gmail.com",
-            "homepage": "http://bayer.io"
-        }
-    ],
-    "require": {
-        "php": ">=5.3"
+  "name": "elite50/datadog-client",
+  "description": "Standalone DataDog PHP Client, works without datadog agent",
+  "keywords": ["datadog", "client", "http", "standalone"],
+  "homepage": "http://crowdskout.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Matthias Bayer",
+      "email": "thematthiasbayer@gmail.com",
+      "homepage": "http://bayer.io"
     },
-    "require-dev": {
-        "phpunit/phpunit": "3.7.*"
-    },
-    "autoload": {
-        "psr-0": {
-            "Bayer\\DataDogClient": "src/"
-        }
+    {
+      "name" : "George Yates",
+      "email" : "george@crowdskout.com",
+      "homepage" : "https://crowdskout.com"
     }
+  ],
+  "require": {
+    "php": ">=5.3",
+    "guzzlehttp/guzzle": "~5.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "3.7.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Elite50\\DataDogClient\\": "src/",
+      "Elite50\\DataDogClient\\Tests\\": "tests/Tests"
+    }
+  }
 }

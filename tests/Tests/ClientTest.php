@@ -1,61 +1,68 @@
 <?php
+namespace Elite50\DataDogClient\Tests;
 
-namespace Bayer\DataDogClient\Tests;
+use Elite50\DataDogClient\Client;
+use Elite50\DataDogClient\Event;
+use Elite50\DataDogClient\Series;
+use Elite50\DataDogClient\Series\Metric;
 
-use Bayer\DataDogClient\Client;
-use Bayer\DataDogClient\Event;
-use Bayer\DataDogClient\Series;
-use Bayer\DataDogClient\Series\Metric;
-
-class ClientTest extends \PHPUnit_Framework_TestCase {
-
+/**
+ * Class ClientTest
+ * @package Elite50\DataDogClient\Tests
+ */
+class ClientTest extends \PHPUnit_Framework_TestCase
+{
     const API_KEY = 'test';
     const APP_KEY = 'test';
-
     /**
      * @var Client
      */
     protected $client;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->client = new Client(self::API_KEY, self::APP_KEY);
     }
 
-    public function testConstructor() {
+    public function testConstructor()
+    {
         $client = new Client(self::API_KEY);
-        $this->assertInstanceOf('Bayer\DataDogClient\Client', $client);
+        $this->assertInstanceOf('Elite50\DataDogClient\Client', $client);
     }
 
-    public function testGetAndSetApiKey() {
+    public function testGetAndSetApiKey()
+    {
         $this->assertEquals(self::API_KEY, $this->client->getApiKey());
         $this->client->setApiKey('test_api_key');
         $this->assertEquals('test_api_key', $this->client->getApiKey());
     }
 
-    public function testGetAndSetApplicationKey() {
+    public function testGetAndSetApplicationKey()
+    {
         $this->assertEquals(self::APP_KEY, $this->client->getApplicationKey());
         $this->client->setApplicationKey('test_app_key');
         $this->assertEquals('test_app_key', $this->client->getApplicationKey());
     }
 
-    public function testSendSeries() {
-        $series  = new Series();
-        $metric1 = new Metric('test.metric.name', array(
-            array(time(), 20),
-            array(time() - 5, 15),
-            array(time() - 10, 10),
-        ));
+    public function testSendSeries()
+    {
+        $series = new Series();
+        $metric1 = new Metric('test.metric.name', [
+            [time(), 20],
+            [time() - 5, 15],
+            [time() - 10, 10],
+        ]);
         $metric1->setType(Metric::TYPE_GAUGE)
             ->setHost('host1.com')
             ->addTag('test', 'tag');
 
         $series->addMetric($metric1);
 
-        $metric2 = new Metric('test.metric2.name', array(
-            array(time(), 18),
-            array(time() - 1, 21),
-            array(time() - 2, 12),
-        ));
+        $metric2 = new Metric('test.metric2.name', [
+            [time(), 18],
+            [time() - 1, 21],
+            [time() - 2, 12],
+        ]);
         $metric2->setType(Metric::TYPE_COUNTER);
 
         $series->addMetric($metric2);
@@ -63,7 +70,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $this->client->sendSeries($series);
     }
 
-    public function testSendEvent() {
+    public function testSendEvent()
+    {
         $event = new Event('TestEvent', 'This is a testevent');
         $event->addTag('foo', 'bar')
             ->setAlertType(Event::TYPE_SUCCESS)
@@ -74,69 +82,75 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         $this->client->sendEvent($event);
     }
 
-    public function testSendMetric() {
-        $metric1 = new Metric('test.metric.name', array(
-            array(time(), 20),
-            array(time() - 5, 15),
-            array(time() - 10, 10),
-        ));
+    public function testSendMetric()
+    {
+        $metric1 = new Metric('test.metric.name', [
+            [time(), 20],
+            [time() - 5, 15],
+            [time() - 10, 10],
+        ]);
 
         $this->client->sendMetric($metric1);
     }
 
-    public function testCreatingMetricWithEmptyPointArray() {
-        $metric = new Metric('test.metric.name', array());
+    public function testCreatingMetricWithEmptyPointArray()
+    {
+        $metric = new Metric('test.metric.name', []);
         $this->assertEmpty($metric->getPoints());
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Client\EmptyMetricException
+     * @expectedException \Elite50\DataDogClient\Client\EmptyMetricException
      */
-    public function testSendingEmptyMetricThrowsException() {
-        $metric = new Metric('test.metric.name', array(20));
+    public function testSendingEmptyMetricThrowsException()
+    {
+        $metric = new Metric('test.metric.name', [20]);
         $metric->removePoints();
         $this->client->sendMetric($metric);
     }
 
-    public function testSendMetricWithShortcutMethod() {
+    public function testSendMetricWithShortcutMethod()
+    {
         $this->client->metric(
             'shortcut.metric',
-            array(
-                array(time(), 20),
-                array(time() - 5, 15),
-                array(time() - 10, 10),
-            )
+            [
+                [time(), 20],
+                [time() - 5, 15],
+                [time() - 10, 10],
+            ]
         );
 
-        $this->client->metric('shortcut.metric', array(20));
+        $this->client->metric('shortcut.metric', [20]);
 
         $this->client->metric(
             'custom.metric',
-            array(20),
-            array(
+            [20],
+            [
                 'host' => 'foo.com',
                 'type' => Metric::TYPE_COUNTER
-            )
+            ]
         );
     }
 
-    public function testSendEventWithShortcutMethod() {
+    public function testSendEventWithShortcutMethod()
+    {
         $this->client->event('Test Event', 'My Event');
 
         $this->client->event(
             'Test Event',
             'My Event',
-            array(
+            [
                 'priority'      => Event::PRIORITY_LOW,
                 'date_happened' => time() - 1234
-            )
+            ]
         );
     }
 
     /**
-     * @expectedException \Bayer\DataDogClient\Client\EmptySeriesException
+     * @expectedException \Elite50\DataDogClient\Client\EmptySeriesException
      */
-    public function testDoNotSendEmptySeries() {
+    public function testDoNotSendEmptySeries()
+    {
         $series = new Series();
 
         $this->client->sendSeries($series);
