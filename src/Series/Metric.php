@@ -1,5 +1,4 @@
 <?php
-
 namespace Elite50\DataDogClient\Series;
 
 use Elite50\DataDogClient\AbstractDataObject;
@@ -16,18 +15,16 @@ use Elite50\DataDogClient\Series\Metric\InvalidTypeException;
  *
  * @package Bayer\DataDogClient\Series
  */
-class Metric extends AbstractDataObject {
-
-    const TYPE_GAUGE   = 'gauge';
+class Metric extends AbstractDataObject
+{
+    const TYPE_GAUGE = 'gauge';
     const TYPE_COUNTER = 'counter';
-
     /**
      * Name of the metric
      *
      * @var string
      */
     protected $name;
-
     /**
      * Type of the metric
      *
@@ -36,14 +33,12 @@ class Metric extends AbstractDataObject {
      * @var string
      */
     protected $type;
-
     /**
      * Hostname of the source machine
      *
      * @var string
      */
     protected $host;
-
     /**
      * Measurement points of the metric
      *
@@ -51,7 +46,7 @@ class Metric extends AbstractDataObject {
      *
      * @var array
      */
-    protected $points = array();
+    protected $points = [];
 
     /**
      * A Metric groups multiple measure points.
@@ -60,12 +55,13 @@ class Metric extends AbstractDataObject {
      * can be specified during initiating.
      *
      * @param string $name
-     * @param array  $points
+     * @param array $points
      */
-    public function __construct($name, array $points) {
+    public function __construct($name, array $points)
+    {
         // Allow constructing with a single point
         if (isset($points[0]) && is_numeric($points[0])) {
-            $points = array($points);
+            $points = [$points];
         }
 
         $this->setName($name)
@@ -76,7 +72,8 @@ class Metric extends AbstractDataObject {
     /**
      * @return mixed
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -85,7 +82,8 @@ class Metric extends AbstractDataObject {
      *
      * @return Metric
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
@@ -94,7 +92,8 @@ class Metric extends AbstractDataObject {
     /**
      * @return string|null
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
@@ -104,7 +103,8 @@ class Metric extends AbstractDataObject {
      *
      * @return Metric
      */
-    public function setType($type) {
+    public function setType($type)
+    {
         if (!$this->isValidType($type)) {
             throw new InvalidTypeException('Type must be one of Metric::TYPE_*');
         }
@@ -116,7 +116,8 @@ class Metric extends AbstractDataObject {
     /**
      * @return string|null
      */
-    public function getHost() {
+    public function getHost()
+    {
         return $this->host;
     }
 
@@ -125,7 +126,8 @@ class Metric extends AbstractDataObject {
      *
      * @return Metric
      */
-    public function setHost($host) {
+    public function setHost($host)
+    {
         $this->host = $host;
 
         return $this;
@@ -134,7 +136,8 @@ class Metric extends AbstractDataObject {
     /**
      * @return array
      */
-    public function getPoints() {
+    public function getPoints()
+    {
         return $this->points;
     }
 
@@ -143,7 +146,8 @@ class Metric extends AbstractDataObject {
      *
      * @return Metric
      */
-    public function setPoints(array $points) {
+    public function setPoints(array $points)
+    {
         $this->removePoints();
         $this->addPoints($points);
 
@@ -166,10 +170,11 @@ class Metric extends AbstractDataObject {
      *
      * @return Metric
      */
-    public function addPoint(array $point) {
+    public function addPoint(array $point)
+    {
         // Add timestamp if non provided
         if (!isset($point[1])) {
-            $point = array(time(), $point[0]);
+            $point = [time(), $point[0]];
         }
 
         if (!is_integer($point[0])) {
@@ -190,7 +195,8 @@ class Metric extends AbstractDataObject {
      *
      * @return Metric
      */
-    public function addPoints(array $points) {
+    public function addPoints(array $points)
+    {
         foreach ($points as $point) {
             $this->addPoint($point);
         }
@@ -201,8 +207,9 @@ class Metric extends AbstractDataObject {
     /**
      * @return Metric
      */
-    public function removePoints() {
-        $this->points = array();
+    public function removePoints()
+    {
+        $this->points = [];
 
         return $this;
     }
@@ -210,19 +217,20 @@ class Metric extends AbstractDataObject {
     /**
      * @return array
      */
-    public function toArray() {
-        $data = array(
+    public function toArray()
+    {
+        $data = [
             'metric' => $this->getName(),
             'type'   => $this->getType(),
             'points' => $this->getPoints(),
-        );
+        ];
 
         if ($host = $this->getHost()) {
             $data['host'] = $host;
         }
 
         if ($tags = $this->getTags()) {
-            $data['tags'] = array();
+            $data['tags'] = [];
             foreach ($tags as $tag => $value) {
                 $data['tags'][] = "$tag:$value";
             }
@@ -231,19 +239,19 @@ class Metric extends AbstractDataObject {
         return $data;
     }
 
-
     /**
      * @param $type
      *
      * @return bool
      */
-    protected function isValidType($type) {
+    protected function isValidType($type)
+    {
         return in_array(
             $type,
-            array(
+            [
                 self::TYPE_GAUGE,
                 self::TYPE_COUNTER
-            )
+            ]
         );
     }
 }

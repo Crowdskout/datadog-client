@@ -1,5 +1,4 @@
 <?php
-
 namespace Elite50\DataDogClient;
 
 use Elite50\DataDogClient\Factory\InvalidPropertyException;
@@ -12,15 +11,17 @@ use Elite50\DataDogClient\Series\Metric;
  *
  * @package Bayer\DataDogClient
  */
-class Factory {
+class Factory
+{
     /**
      * @param string $name
-     * @param array  $points
-     * @param array  $options
+     * @param array $points
+     * @param array $options
      *
      * @return Metric
      */
-    public static function buildMetric($name, array $points, array $options = array()) {
+    public static function buildMetric($name, array $points, array $options = [])
+    {
         $metric = new  Metric($name, $points);
 
         foreach ($options as $property => $value) {
@@ -33,11 +34,12 @@ class Factory {
     /**
      * @param string $text
      * @param string $title
-     * @param array  $options
+     * @param array $options
      *
      * @return Event
      */
-    public static function buildEvent($text, $title = '', array $options = array()) {
+    public static function buildEvent($text, $title = '', array $options = [])
+    {
         $event = new Event($text, $title);
 
         foreach ($options as $property => $value) {
@@ -53,7 +55,8 @@ class Factory {
      * @param $value
      * @throws InvalidPropertyException
      */
-    protected static function setProperty($object, $property, $value) {
+    protected static function setProperty($object, $property, $value)
+    {
         $method = self::getMethodName($property);
 
         if (!method_exists($object, $method)) {
@@ -70,7 +73,8 @@ class Factory {
      * @param $string
      * @return mixed
      */
-    protected static function getMethodName($string) {
+    protected static function getMethodName($string)
+    {
         return 'set' . preg_replace_callback(
             '/_([a-z])/',
             function ($chunk) {

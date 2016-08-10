@@ -1,7 +1,10 @@
 <?php
-
 namespace Elite50\DataDogClient\Client;
 
-class EmptyMetricException extends \Exception {
-
+/**
+ * Class EmptyMetricException
+ * @package Elite50\DataDogClient\Client
+ */
+class EmptyMetricException extends \Exception
+{
 }

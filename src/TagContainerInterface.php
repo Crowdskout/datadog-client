@@ -1,5 +1,4 @@
 <?php
-
 namespace Elite50\DataDogClient;
 
 /**
@@ -9,7 +8,8 @@ namespace Elite50\DataDogClient;
  *
  * @package Bayer\DataDogClient
  */
-interface TagContainerInterface {
+interface TagContainerInterface
+{
     /**
      * Get all tags
      *

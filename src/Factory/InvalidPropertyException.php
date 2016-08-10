@@ -1,7 +1,10 @@
 <?php
-
 namespace Elite50\DataDogClient\Factory;
 
-class InvalidPropertyException extends \Exception {
-
+/**
+ * Class InvalidPropertyException
+ * @package Elite50\DataDogClient\Factory
+ */
+class InvalidPropertyException extends \Exception
+{
 }

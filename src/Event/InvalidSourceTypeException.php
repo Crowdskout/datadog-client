@@ -1,7 +1,10 @@
 <?php
-
 namespace Elite50\DataDogClient\Event;
 
-class InvalidSourceTypeException extends \Exception {
-
+/**
+ * Class InvalidSourceTypeException
+ * @package Elite50\DataDogClient\Event
+ */
+class InvalidSourceTypeException extends \Exception
+{
 }

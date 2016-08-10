@@ -1,10 +1,9 @@
 <?php
-
 namespace Elite50\DataDogClient;
 
 use Elite50\DataDogClient\Event\InvalidAlertTypeException;
-use Elite50\DataDogClient\Event\InvalidSourceTypeException;
 use Elite50\DataDogClient\Event\InvalidPriorityException;
+use Elite50\DataDogClient\Event\InvalidSourceTypeException;
 
 /**
  * Class Event
@@ -14,50 +13,44 @@ use Elite50\DataDogClient\Event\InvalidPriorityException;
  *
  * @package Bayer\DataDogClient
  */
-class Event extends AbstractDataObject {
-
+class Event extends AbstractDataObject
+{
     const PRIORITY_NORMAL = 'normal';
-    const PRIORITY_LOW    = 'low';
-
-    const TYPE_INFO    = 'info';
+    const PRIORITY_LOW = 'low';
+    const TYPE_INFO = 'info';
     const TYPE_WARNING = 'warning';
-    const TYPE_ERROR   = 'error';
+    const TYPE_ERROR = 'error';
     const TYPE_SUCCESS = 'success';
-
-    const SOURCE_NAGIOS     = 'nagios';
-    const SOURCE_HUDSON     = 'hudson';
-    const SOURCE_JENKINS    = 'jenkins';
-    const SOURCE_USER       = 'user';
-    const SOURCE_MYAPPS     = 'my apps';
-    const SOURCE_FEED       = 'feed';
-    const SOURCE_CHEF       = 'chef';
-    const SOURCE_PUPPET     = 'puppet';
-    const SOURCE_GIT        = 'git';
-    const SOURCE_BITBUCKET  = 'gitbucket';
-    const SOURCE_FABRIC     = 'fabric';
+    const SOURCE_NAGIOS = 'nagios';
+    const SOURCE_HUDSON = 'hudson';
+    const SOURCE_JENKINS = 'jenkins';
+    const SOURCE_USER = 'user';
+    const SOURCE_MYAPPS = 'my apps';
+    const SOURCE_FEED = 'feed';
+    const SOURCE_CHEF = 'chef';
+    const SOURCE_PUPPET = 'puppet';
+    const SOURCE_GIT = 'git';
+    const SOURCE_BITBUCKET = 'gitbucket';
+    const SOURCE_FABRIC = 'fabric';
     const SOURCE_CAPISTRANO = 'capistrano';
-
     /**
      * Title of the event
      *
      * @var string
      */
     protected $title;
-
     /**
      * The event message
      *
      * @var string
      */
     protected $text;
-
     /**
      * Timestamp when the event occured
      *
      * @var int
      */
     protected $dateHappened;
-
     /**
      * Event priority
      *
@@ -66,7 +59,6 @@ class Event extends AbstractDataObject {
      * @var string
      */
     protected $priority;
-
     /**
      * Event alert type
      *
@@ -75,14 +67,12 @@ class Event extends AbstractDataObject {
      * @var string
      */
     protected $alertType;
-
     /**
      * Arbitary string used to group events
      *
      * @var string
      */
     protected $aggregationKey;
-
     /**
      * Type of the event source
      *
@@ -99,7 +89,8 @@ class Event extends AbstractDataObject {
      * @param string $text
      * @param string $title
      */
-    public function __construct($text, $title = '') {
+    public function __construct($text, $title = '')
+    {
         $this->setText($text)
             ->setTitle($title)
             ->setDateHappened(time())
@@ -110,7 +101,8 @@ class Event extends AbstractDataObject {
     /**
      * @return string
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
     }
 
@@ -119,7 +111,8 @@ class Event extends AbstractDataObject {
      *
      * @return Event
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->title = $title;
 
         return $this;
@@ -128,7 +121,8 @@ class Event extends AbstractDataObject {
     /**
      * @return string
      */
-    public function getText() {
+    public function getText()
+    {
         return $this->text;
     }
 
@@ -137,7 +131,8 @@ class Event extends AbstractDataObject {
      *
      * @return Event
      */
-    public function setText($text) {
+    public function setText($text)
+    {
         $this->text = $text;
 
         return $this;
@@ -146,7 +141,8 @@ class Event extends AbstractDataObject {
     /**
      * @return int
      */
-    public function getDateHappened() {
+    public function getDateHappened()
+    {
         return $this->dateHappened;
     }
 
@@ -155,7 +151,8 @@ class Event extends AbstractDataObject {
      *
      * @return Event
      */
-    public function setDateHappened($timestamp) {
+    public function setDateHappened($timestamp)
+    {
         $this->dateHappened = $timestamp;
 
         return $this;
@@ -164,7 +161,8 @@ class Event extends AbstractDataObject {
     /**
      * @return mixed
      */
-    public function getPriority() {
+    public function getPriority()
+    {
         return $this->priority;
     }
 
@@ -174,7 +172,8 @@ class Event extends AbstractDataObject {
      *
      * @return Event
      */
-    public function setPriority($priority) {
+    public function setPriority($priority)
+    {
         if (!$this->isValidPriority($priority)) {
             throw new InvalidPriorityException('Priority must be on of Event::PRIORITY_*');
         }
@@ -186,7 +185,8 @@ class Event extends AbstractDataObject {
     /**
      * @return mixed
      */
-    public function getAlertType() {
+    public function getAlertType()
+    {
         return $this->alertType;
     }
 
@@ -196,7 +196,8 @@ class Event extends AbstractDataObject {
      *
      * @return Event
      */
-    public function setAlertType($type) {
+    public function setAlertType($type)
+    {
         if (!$this->isValidType($type)) {
             throw new InvalidAlertTypeException('Type must be one of Event::TYPE_*');
         }
@@ -208,7 +209,8 @@ class Event extends AbstractDataObject {
     /**
      * @return mixed
      */
-    public function getAggregationKey() {
+    public function getAggregationKey()
+    {
         return $this->aggregationKey;
     }
 
@@ -217,7 +219,8 @@ class Event extends AbstractDataObject {
      *
      * @return Event
      */
-    public function setAggregationKey($aggregationKey) {
+    public function setAggregationKey($aggregationKey)
+    {
         $this->aggregationKey = $aggregationKey;
 
         return $this;
@@ -226,7 +229,8 @@ class Event extends AbstractDataObject {
     /**
      * @return mixed
      */
-    public function getSourceTypeName() {
+    public function getSourceTypeName()
+    {
         return $this->sourceTypeName;
     }
 
@@ -236,7 +240,8 @@ class Event extends AbstractDataObject {
      *
      * @return Event
      */
-    public function setSourceTypeName($sourceType) {
+    public function setSourceTypeName($sourceType)
+    {
         if (!$this->isValidSourceType($sourceType)) {
             throw new InvalidSourceTypeException('SourceTyoe must be on of Event::SOURCE_*');
         }
@@ -248,17 +253,18 @@ class Event extends AbstractDataObject {
     /**
      * @return array
      */
-    public function toArray() {
-        $data = array(
+    public function toArray()
+    {
+        $data = [
             'title'         => $this->getTitle(),
             'text'          => $this->getText(),
             'date_happened' => $this->getDateHappened(),
             'priority'      => $this->getPriority(),
             'alert_type'    => $this->getAlertType(),
-        );
+        ];
 
         if ($tags = $this->getTags()) {
-            $data['tags'] = array();
+            $data['tags'] = [];
             foreach ($tags as $tag => $value) {
                 $data['tags'][] = "$tag:$value";
             }
@@ -275,22 +281,24 @@ class Event extends AbstractDataObject {
         return $data;
     }
 
-    protected function isValidType($type) {
+    protected function isValidType($type)
+    {
         return in_array(
             $type,
-            array(
+            [
                 self::TYPE_ERROR,
                 self::TYPE_INFO,
                 self::TYPE_SUCCESS,
                 self::TYPE_WARNING,
-            )
+            ]
         );
     }
 
-    protected function isValidSourceType($sourceType) {
+    protected function isValidSourceType($sourceType)
+    {
         return in_array(
             $sourceType,
-            array(
+            [
                 self::SOURCE_NAGIOS,
                 self::SOURCE_HUDSON,
                 self::SOURCE_JENKINS,
@@ -303,18 +311,18 @@ class Event extends AbstractDataObject {
                 self::SOURCE_BITBUCKET,
                 self::SOURCE_FABRIC,
                 self::SOURCE_CAPISTRANO,
-            )
+            ]
         );
     }
 
-    protected function isValidPriority($priority) {
+    protected function isValidPriority($priority)
+    {
         return in_array(
             $priority,
-            array(
+            [
                 self::PRIORITY_NORMAL,
                 self::PRIORITY_LOW,
-            )
+            ]
         );
     }
-
 }
