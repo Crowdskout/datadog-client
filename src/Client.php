@@ -197,20 +197,21 @@ class Client
     protected function send($url, $data)
     {
         // Prepare request
-        $session = curl_init();
-        curl_setopt($session, CURLOPT_URL, $url);
-        curl_setopt($session, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($session, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($session, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+        $guzzleClient = new \GuzzleHttp\Client();
+        $request = $guzzleClient->createRequest('POST', $url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($data),
+        ]);
 
         // Send request
-        $response = curl_exec($session);
-        $responseCode = (int)curl_getinfo($session, CURLINFO_HTTP_CODE);
+        $rawResponse = $guzzleClient->send($request);
+        $responseCode = $rawResponse->getStatusCode();
 
         // Check for api errors
         if ($responseCode >= 400) {
-            $response = json_decode($response, true);
+            $response = json_decode($rawResponse->getBody(), true);
             $message = "Error $responseCode: ";
             if (isset($response['errors'])) {
                 $message .= implode(' ', $response['errors']);
@@ -222,7 +223,5 @@ class Client
 
             throw new RequestException($message, $responseCode);
         }
-
-        curl_close($session);
     }
 }
