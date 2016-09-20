@@ -203,13 +203,13 @@ class Client
                 'Content-Type' => 'application/json',
             ],
             'body' => json_encode($data),
-            'future' => true,
+            'future' => false,
             'exceptions' => false,
         ]);
 
         // Send request
         $rawResponse = $guzzleClient->send($request);
-
+/*
         $rawResponse->then(function() {}, function($rawResponse) {
             // Check for api errors
             $responseCode = $rawResponse->getStatusCode();
@@ -225,6 +225,6 @@ class Client
             }
 
             throw new RequestException($message, $responseCode);
-        });
+        });*/
     }
 }
