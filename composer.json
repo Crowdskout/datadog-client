@@ -1,8 +1,8 @@
 {
-  "name": "elite50/datadog-client",
+  "name": "crowdskout/datadog-client",
   "description": "Standalone DataDog PHP Client, works without datadog agent",
   "keywords": ["datadog", "client", "http", "standalone"],
-  "homepage": "http://crowdskout.com",
+  "homepage": "https://crowdskout.com",
   "license": "MIT",
   "authors": [
     {
