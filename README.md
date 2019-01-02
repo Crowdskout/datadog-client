@@ -10,7 +10,7 @@ Feel free to extend it to your own needs or sending pull requests.
 This library can be installed using composer
 
 ```
-composer require matthiasbayer/datadog-client
+composer require crowdskout/datadog-client
 ```
 
 
