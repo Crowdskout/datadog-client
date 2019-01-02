@@ -16,8 +16,6 @@ use Elite50\DataDogClient\Series\Metric;
  * to send previously build objects through the wire.
  * Alternatively, you can use `Client::metric` or `Client::event` methods to send
  * data without having to build objects first.
- *
- * @package Bayer\DataDogClient
  */
 class Client
 {
@@ -45,7 +43,6 @@ class Client
     {
         $this->apiKey = $apiKey;
         $this->applicationKey = $applicationKey;
-
     }
 
     /**
@@ -92,9 +89,11 @@ class Client
      * Send a Series object to datadog
      *
      * @param Series $series
-     * @throws Client\EmptySeriesException
      *
      * @return Client
+     *
+     * @throws Client\EmptySeriesException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sendSeries(Series $series)
     {
@@ -118,9 +117,12 @@ class Client
      * dummy series, as the datadog API requires.
      *
      * @param Metric $metric
-     * @throws EmptyMetricException
      *
      * @return Client
+     *
+     * @throws EmptyMetricException
+     * @throws EmptySeriesException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sendMetric(Metric $metric)
     {
@@ -145,6 +147,10 @@ class Client
      * @param array $options
      *
      * @return Client
+     *
+     * @throws EmptyMetricException
+     * @throws EmptySeriesException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function metric($name, array $points, array $options = [])
     {
@@ -164,6 +170,8 @@ class Client
      * @param array $options
      *
      * @return Client
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function event($text, $title = '', array $options = [])
     {
@@ -178,6 +186,8 @@ class Client
      * @param Event $event
      *
      * @return Client
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sendEvent(Event $event)
     {
@@ -190,41 +200,25 @@ class Client
     }
 
     /**
-     * @param $url
-     * @param $data
-     * @throws Client\RequestException
+     * @param string $url
+     * @param mixed $data
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function send($url, $data)
     {
-        // Prepare request
+        // Prepare and send request
         $guzzleClient = new \GuzzleHttp\Client();
-        $request = $guzzleClient->createRequest('POST', $url, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-            'body' => json_encode($data),
-            'future' => false,
-            'exceptions' => false,
-        ]);
-
-        // Send request
-        $rawResponse = $guzzleClient->send($request);
-/*
-        $rawResponse->then(function() {}, function($rawResponse) {
-            // Check for api errors
-            $responseCode = $rawResponse->getStatusCode();
-
-            $response = json_decode($rawResponse->getBody(), true);
-            $message = "Error $responseCode: ";
-            if (isset($response['errors'])) {
-                $message .= implode(' ', $response['errors']);
-            }
-
-            if (isset($response['warnings'])) {
-                $message .= implode(' ', $response['warnings']);
-            }
-
-            throw new RequestException($message, $responseCode);
-        });*/
+        $rawResponse = $guzzleClient->post(
+            $url,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $data,
+                'future' => false,
+                'exceptions' => false,
+            ]
+        );
     }
 }
